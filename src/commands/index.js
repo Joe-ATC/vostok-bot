@@ -26,13 +26,17 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `✨ *${toSmallCaps("!menu")}* ➟ _Menú principal_\n`;
         menuContent += `✨ *${toSmallCaps("!ping")}* ➟ _Velocidad del bot_\n`;
         menuContent += `✨ *${toSmallCaps("!stats")}* ➟ _Rendimiento del sistema_\n`;
-        menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n`;
-        menuContent += `✨ *${toSmallCaps("!dudas")}* ➟ _Preguntas frecuentes_\n\n`;
+        menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n\n`;
         
         menuContent += `${divider}\n`;
         menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
         menuContent += `${divider}\n`;
         menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n\n`;
+
+        menuContent += `${divider}\n`;
+        menuContent += `❓  *ᴀ ʏ ᴜ ᴅ ᴀ*\n`;
+        menuContent += `${divider}\n`;
+        menuContent += `✨ *${toSmallCaps("!preguntas")}* ➟ _Preguntas frecuentes_\n\n`;
         
         menuContent += `🌟 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢʀ-&&* 🌟`;
 
@@ -46,7 +50,7 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
     }
 };
 
-const dudas = async (sock, remoteJid, msg) => {
+const preguntas = async (sock, remoteJid, msg) => {
     try {
         const userJid = msg.key.participant || msg.key.remoteJid;
         const divider = `━━━━━━━━━━━━━━━━━━━━`;
@@ -78,7 +82,7 @@ const dudas = async (sock, remoteJid, msg) => {
             mentions: [userJid]
         }, { quoted: msg });
     } catch (err) {
-        console.error(chalk.red("[Dudas Error]"), err);
+        console.error(chalk.red("[Preguntas Error]"), err);
     }
 };
 
@@ -147,5 +151,5 @@ module.exports = {
     stats,
     creador,
     sticker,
-    dudas,
+    preguntas,
 };
