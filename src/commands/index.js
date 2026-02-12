@@ -26,7 +26,8 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `✨ *${toSmallCaps("!menu")}* ➟ _Menú principal_\n`;
         menuContent += `✨ *${toSmallCaps("!ping")}* ➟ _Velocidad del bot_\n`;
         menuContent += `✨ *${toSmallCaps("!stats")}* ➟ _Rendimiento del sistema_\n`;
-        menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n\n`;
+        menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n`;
+        menuContent += `✨ *${toSmallCaps("!dudas")}* ➟ _Preguntas frecuentes_\n\n`;
         
         menuContent += `${divider}\n`;
         menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
@@ -42,6 +43,42 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         }, { quoted: msg });
     } catch (err) {
         console.error(chalk.red("[Menu Error]"), err);
+    }
+};
+
+const dudas = async (sock, remoteJid, msg) => {
+    try {
+        const userJid = msg.key.participant || msg.key.remoteJid;
+        const divider = `━━━━━━━━━━━━━━━━━━━━`;
+
+        let faq = `❓ *【 ${toSmallCaps("Preguntas Frecuentes")} 】* ❓\n\n`;
+
+        const questions = [
+            ["¿Qué es Vostok-Core?", "Es un bot multi-funcional diseñado para optimizar la interacción en WhatsApp."],
+            ["¿Es seguro usarlo?", "Sí, el bot utiliza una conexión cifrada punto a punto a través de Baileys."],
+            ["¿Cómo hago un sticker?", "Envía una imagen o video corto (max 10s) con el comando !sticker."],
+            ["¿Por qué no responde?", "Puede ser por falta de conexión o sesión caída. Intenta reiniciar el bot."],
+            ["¿Funciona en grupos?", "Sí, está optimizado para funcionar tanto en chats privados como grupales."],
+            ["¿Cómo veo mi latencia?", "Usa el comando !ping para ver la velocidad de respuesta."],
+            ["¿Quién es el creador?", "Puedes ver la info del desarrollador usando el comando !creador."],
+            ["¿El bot es gratuito?", "El uso depende de los términos del propietario del bot."],
+            ["¿Cómo actualizo el bot?", "Mantente al tanto del repositorio oficial en GitHub para nuevos cambios."],
+            ["¿Qué hago si hay un bug?", "Reporta cualquier error directamente al desarrollador para una pronta solución."]
+        ];
+
+        questions.forEach(([q, a], i) => {
+            faq += `*${i + 1}. ${q}*\n└ ${a}\n\n`;
+        });
+
+        faq += `${divider}\n`;
+        faq += `👤 *sᴏʟɪᴄɪᴛᴀᴅᴏ ᴘᴏʀ:* @${userJid.split('@')[0]}`;
+
+        await sock.sendMessage(remoteJid, { 
+            text: faq,
+            mentions: [userJid]
+        }, { quoted: msg });
+    } catch (err) {
+        console.error(chalk.red("[Dudas Error]"), err);
     }
 };
 
@@ -110,4 +147,5 @@ module.exports = {
     stats,
     creador,
     sticker,
+    dudas,
 };
