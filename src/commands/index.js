@@ -61,11 +61,11 @@ const preguntas = async (sock, remoteJid, msg) => {
             ["¿Qué es Vostok-Core?", "Es un bot multi-funcional diseñado para optimizar la interacción en WhatsApp."],
             ["¿Es seguro usarlo?", "Sí, el bot utiliza una conexión cifrada punto a punto a través de Baileys."],
             ["¿Cómo hago un sticker?", "Envía una imagen o video corto (max 10s) con el comando !sticker."],
-            ["¿Por qué no responde?", "Puede ser por falta de conexión o sesión caída. Intenta reiniciar el bot."],
+            ["¿Por qué no responde?", "Puede ser por falta de conexión o sesión caída. Es normal debido a que está en una fase de prueba."],
             ["¿Funciona en grupos?", "Sí, está optimizado para funcionar tanto en chats privados como grupales."],
             ["¿Cómo veo mi latencia?", "Usa el comando !ping para ver la velocidad de respuesta."],
             ["¿Quién es el creador?", "Puedes ver la info del desarrollador usando el comando !creador."],
-            ["¿El bot es gratuito?", "El uso depende de los términos del propietario del bot."],
+            ["¿El bot es gratuito?", "El bot es open source, por lo tanto: SI. Aunque puede que existen costos por servicios especificos"],
             ["¿Cómo actualizo el bot?", "Mantente al tanto del repositorio oficial en GitHub para nuevos cambios."],
             ["¿Qué hago si hay un bug?", "Reporta cualquier error directamente al desarrollador para una pronta solución."]
         ];

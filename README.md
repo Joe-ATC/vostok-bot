@@ -38,7 +38,7 @@ El desarrollo de este bot se baso en tres pilares fundamentales:
 - [!] STICKER : Conversor de Imagen/Video/GIF a Sticker.
 - [!] PREGUNTAS : Sistema de FAQ y Soporte integrado.
 - [!] PING : Medidor de latencia del servidor.
-- [!] CREADOR : Version digital del perfil de desarrollador.
+- [!] CREADOR : Info del dev.
 
 ---
 
