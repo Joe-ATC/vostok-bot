@@ -1,0 +1,113 @@
+const { toSmallCaps } = require("../utils/helpers");
+const { botName, ownerName, githubUrl, version: botVer } = require("../config/settings");
+const path = require("path");
+const chalk = require("chalk");
+const sticker = require("./sticker");
+
+const menu = async (sock, remoteJid, msg, args, pushName) => {
+    try {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString();
+        const timeStr = now.toLocaleTimeString();
+        const userJid = msg.key.participant || msg.key.remoteJid;
+
+        const divider = `━━━━━━━━━━━━━━━━━━━━`;
+        
+        let menuContent = `🔮 *【 ${toSmallCaps(botName)} 】* 🔮\n\n`;
+        
+        menuContent += `🔹 *ᴜsᴜᴀʀɪᴏ:* @${userJid.split('@')[0]}\n`;
+        menuContent += `📅 *ғᴇᴄʜᴀ:* ${dateStr}\n`;
+        menuContent += `⏰ *ʜᴏʀᴀ:* ${timeStr}\n`;
+        menuContent += `🚀 *ᴠᴇʀsɪᴏɴ:* ${botVer}\n\n`;
+        
+        menuContent += `${divider}\n`;
+        menuContent += `🌸  *ɪ ɴ ғ ᴏ ʀ ᴍ ᴀ ᴄ ɪ ᴏ ɴ*\n`;
+        menuContent += `${divider}\n`;
+        menuContent += `✨ *${toSmallCaps("!menu")}* ➟ _Menú principal_\n`;
+        menuContent += `✨ *${toSmallCaps("!ping")}* ➟ _Velocidad del bot_\n`;
+        menuContent += `✨ *${toSmallCaps("!stats")}* ➟ _Rendimiento del sistema_\n`;
+        menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n\n`;
+        
+        menuContent += `${divider}\n`;
+        menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
+        menuContent += `${divider}\n`;
+        menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n\n`;
+        
+        menuContent += `🌟 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢʀ-&&* 🌟`;
+
+        await sock.sendMessage(remoteJid, { 
+            image: { url: path.join(process.cwd(), "assets", "menu", "vostok.jpg") },
+            caption: menuContent,
+            mentions: [userJid]
+        }, { quoted: msg });
+    } catch (err) {
+        console.error(chalk.red("[Menu Error]"), err);
+    }
+};
+
+const ping = async (sock, remoteJid, msg) => {
+    try {
+        const start = Date.now();
+        const { key } = await sock.sendMessage(remoteJid, { text: "🚀 _Calculando latencia..._" }, { quoted: msg });
+        const latency = Date.now() - start;
+        await sock.sendMessage(remoteJid, { 
+            text: `📡 *Woshh!* \n✨ Latencia: *${latency}ms*`,
+            edit: key
+        });
+    } catch (err) {
+        console.error(chalk.red("[Ping Error]"), err);
+    }
+};
+
+const stats = async (sock, remoteJid, msg) => {
+    try {
+        const used = process.memoryUsage().heapUsed / 1024 / 1024;
+        const uptime = process.uptime();
+        const hours = Math.floor(uptime / 3600);
+        const mins = Math.floor((uptime % 3600) / 60);
+
+        let statsMess = `📊 *ᴇsᴛᴀᴅɪ́sᴛɪᴄᴀs ᴠᴏsᴛᴏᴋ* 📊\n\n`;
+        statsMess += `✨ *ᴍᴇᴍᴏʀɪᴀ:* ${used.toFixed(2)} MB\n`;
+        statsMess += `✨ *ᴜᴘᴛɪᴍᴇ:* ${hours}h ${mins}m\n`;
+        statsMess += `✨ *ᴘʟᴀᴛᴀғᴏʀᴍᴀ:* ${process.platform}\n`;
+        statsMess += `✨ *ɴᴏᴅᴇ:* ${process.version}`;
+
+        await sock.sendMessage(remoteJid, { text: statsMess }, { quoted: msg });
+    } catch (err) {
+        console.error(chalk.red("[Stats Error]"), err);
+    }
+};
+
+const creador = async (sock, remoteJid, msg) => {
+    try {
+        const userJid = msg.key.participant || msg.key.remoteJid;
+        const divider = `────────────────────`;
+
+        let msgText = `💻 *【 ${toSmallCaps("Developer Info")} 】* 💻\n\n`;
+        
+        msgText += `👤 *ɴᴏᴍʙʀᴇ:* ${ownerName}\n`;
+        msgText += `🚀 *ᴘᴇʀғɪʟ:* Programador Experimentado\n`;
+        msgText += `🌐 *ᴀʀᴇᴀ:* Apps y Webs\n`;
+        msgText += `🔗 *ɢɪᴛʜᴜʙ:* ${githubUrl}\n\n`;
+        
+        msgText += `${divider}\n`;
+        msgText += `👤 *sᴏʟɪᴄɪᴛᴀᴅᴏ ᴘᴏʀ:* @${userJid.split('@')[0]}\n`;
+        msgText += `${divider}`;
+
+        await sock.sendMessage(remoteJid, { 
+            image: { url: path.join(process.cwd(), "assets", "fun", "creador.png") },
+            caption: msgText,
+            mentions: [userJid] 
+        }, { quoted: msg });
+    } catch (err) {
+        console.error(chalk.red("[Creador Error]"), err);
+    }
+};
+
+module.exports = {
+    menu,
+    ping,
+    stats,
+    creador,
+    sticker,
+};
