@@ -4,7 +4,7 @@
 
 ## ◣ ASISTENTE MULTI-FUNCIONAL PARA WHATSAPP ◥
 
-![Banner](banfun.png)
+![Banner](banfun.gif)
 
 ESTADO DEL PROYECTO: OPERATIVO [V-2.1.0]
 
