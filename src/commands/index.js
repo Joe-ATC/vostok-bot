@@ -159,4 +159,5 @@ module.exports = {
     sticker,
     preguntas,
     ia,
+    ai: ia,
 };
