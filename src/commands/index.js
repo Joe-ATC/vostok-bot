@@ -6,6 +6,8 @@ const sticker = require("./sticker");
 const attp = require("./attp");
 const toimg = require("./toimg");
 const tts = require("./tts");
+const tagall = require("./tagall");
+const pinterest = require("./pinterest");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -37,7 +39,13 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n`;
         menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto (Minimalista)_\n`;
         menuContent += `✨ *${toSmallCaps("!toimg")}* ➟ _Sticker a imagen_\n`;
-        menuContent += `✨ *${toSmallCaps("!tts")}* ➟ _Texto a voz (Audio)_\n\n`;
+        menuContent += `✨ *${toSmallCaps("!tts")}* ➟ _Texto a voz (Audio)_\n`;
+        menuContent += `✨ *${toSmallCaps("!pinterest")}* ➟ _Buscar imágenes_\n\n`;
+        
+        menuContent += `${divider}\n`;
+        menuContent += `👥  *ɢ ʀ ᴜ ᴘ ᴏ s*\n`;
+        menuContent += `${divider}\n`;
+        menuContent += `✨ *${toSmallCaps("!tagall")}* ➟ _Mencionar a todos_\n\n`;
 
         menuContent += `${divider}\n`;
         menuContent += `❓  *ᴀ ʏ ᴜ ᴅ ᴀ*\n`;
@@ -161,4 +169,6 @@ module.exports = {
     attp,
     toimg,
     tts,
+    tagall,
+    pinterest,
 };
