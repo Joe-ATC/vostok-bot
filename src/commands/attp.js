@@ -1,4 +1,3 @@
-const sharp = require("sharp");
 const { Sticker, StickerTypes } = require("wa-sticker-formatter");
 const { botName } = require("../config/settings");
 const { toSmallCaps } = require("../utils/helpers");
@@ -13,49 +12,12 @@ const attp = async (sock, remoteJid, msg, args) => {
             }, { quoted: msg });
         }
 
-        await sock.sendMessage(remoteJid, { text: "⏳ _Generando sticker de texto, espera un momento..._" }, { quoted: msg });
+        await sock.sendMessage(remoteJid, { text: "⏳ _Generando sticker minimalista..._" }, { quoted: msg });
 
-        // Función para dividir el texto en líneas (word wrap simple)
-        const wrapText = (str, maxLen) => {
-            const words = str.split(' ');
-            let lines = [];
-            let currentLine = '';
-
-            words.forEach(word => {
-                if ((currentLine + word).length < maxLen) {
-                    currentLine += (currentLine ? ' ' : '') + word;
-                } else {
-                    lines.push(currentLine);
-                    currentLine = word;
-                }
-            });
-            lines.push(currentLine);
-            return lines;
-        };
-
-        const lines = wrapText(text, 15);
-        const fontSize = lines.length > 5 ? 30 : 45;
-        const lineHeight = fontSize * 1.2;
-        const startY = (512 - (lines.length * lineHeight)) / 2 + (fontSize / 1.5);
-
-        // Generar el SVG con fondo blanco y texto negro
-        let textSvg = "";
-        lines.forEach((line, i) => {
-            textSvg += `<text x="50%" y="${startY + (i * lineHeight)}" font-family="Arial, sans-serif" font-weight="bold" font-size="${fontSize}" fill="black" text-anchor="middle">${line}</text>`;
-        });
-
-        const svg = `
-        <svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100%" height="100%" fill="white" rx="30" ry="30" />
-            ${textSvg}
-        </svg>
-        `;
-
-        // Convertir SVG a Buffer de imagen usando Sharp (instalado anteriormente)
-        const buffer = await sharp(Buffer.from(svg))
-            .png()
-            .toBuffer();
-
+        // Usamos dummyimage.com para generar una imagen limpia de texto (negro sobre blanco)
+        // No requiere sharp localmente, lo cual mejora la compatibilidad
+        const url = `https://dummyimage.com/600x600/ffffff/000000.png?text=${encodeURIComponent(text)}`;
+        
         // Metadatos del sticker
         const now = new Date();
         const dateStr = now.toLocaleDateString();
@@ -64,7 +26,7 @@ const attp = async (sock, remoteJid, msg, args) => {
         const exifPack = `${toSmallCaps(botName)}`;
         const exifAuthor = `${toSmallCaps(requester)}\n📅 ${dateStr}\n⏰ ${timeStr}`;
 
-        const stickerObj = new Sticker(buffer, {
+        const stickerObj = new Sticker(url, {
             pack: exifPack,
             author: exifAuthor,
             type: StickerTypes.FULL,
@@ -75,12 +37,12 @@ const attp = async (sock, remoteJid, msg, args) => {
 
         const stickerBuffer = await stickerObj.toBuffer();
         await sock.sendMessage(remoteJid, { sticker: stickerBuffer }, { quoted: msg });
-        console.log(chalk.green("[ATTP] Sticker de texto generado localmente con éxito."));
+        console.log(chalk.green("[ATTP] Sticker generado via API externa (Minimalista)."));
 
     } catch (err) {
         console.error(chalk.red("[ATTP Error]"), err);
         await sock.sendMessage(remoteJid, { 
-            text: "❌ Error al generar el sticker de texto. Intenta con algo más corto." 
+            text: "❌ Hubo un fallo al generar el sticker. Intenta con un texto más breve." 
         }, { quoted: msg });
     }
 };
