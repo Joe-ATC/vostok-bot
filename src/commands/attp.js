@@ -12,19 +12,15 @@ const attp = async (sock, remoteJid, msg, args) => {
             }, { quoted: msg });
         }
 
-        await sock.sendMessage(remoteJid, { text: "⏳ _Generando sticker premium (Arial/Roboto)..._" }, { quoted: msg });
+        await sock.sendMessage(remoteJid, { text: "⏳ _Generando sticker premium con emojis..._" }, { quoted: msg });
 
-        // Usamos placehold.co para generar una imagen limpia con fuente Roboto/Arial
-        // Es compatible con el estilo minimalista que pediste (Texto negro, Fondo blanco)
-        // Intentamos codificar correctamente los emojis
-        const encodedText = encodeURIComponent(text);
+        // Usamos api.memegen.link que tiene un excelente soporte para emojis y fuentes modernas
+        // Estética: Texto negro sobre fondo blanco (minimalista)
+        // El texto se coloca en la parte superior ('_') para que se vea centrado/limpio
+        const encodedText = encodeURIComponent(text.trim());
+        const whiteBackground = "https://i.imgur.com/8M2N5p4.png"; // Imagen blanca pura
         
-        // Probamos una API que suele manejar mejor los emojis para stickers (Fallback si placehold no rinde con emojis)
-        // Pero intentaremos primero con el estilo solicitado.
-        const url = `https://placehold.co/512x512/ffffff/000000/png?text=${encodedText}&font=roboto`;
-        
-        // Si el usuario quiere emojis, a veces es mejor usar APIs de stickers dedicadas
-        // Pero seguiremos tu instrucción de estilo minimalista.
+        const url = `https://api.memegen.link/images/custom/_/${encodedText}.png?background=${whiteBackground}&font=notosans-bold`;
         
         // Metadatos del sticker
         const now = new Date();
@@ -40,17 +36,17 @@ const attp = async (sock, remoteJid, msg, args) => {
             type: StickerTypes.FULL,
             categories: ["✨", "📝"],
             id: msg.key.id,
-            quality: 100 // Máxima calidad para texto
+            quality: 100 
         });
 
         const stickerBuffer = await stickerObj.toBuffer();
         await sock.sendMessage(remoteJid, { sticker: stickerBuffer }, { quoted: msg });
-        console.log(chalk.green("[ATTP] Sticker premium generado con éxito."));
+        console.log(chalk.green("[ATTP] Sticker premium (Memegen) generado con éxito."));
 
     } catch (err) {
         console.error(chalk.red("[ATTP Error]"), err);
         await sock.sendMessage(remoteJid, { 
-            text: "❌ Hubo un fallo al generar el sticker. Intenta con un texto más breve o sin caracteres especiales extraños." 
+            text: "❌ Hubo un fallo al generar el sticker con emojis. Intenta con un texto más breve." 
         }, { quoted: msg });
     }
 };
