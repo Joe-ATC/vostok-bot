@@ -3,6 +3,7 @@ const { botName, ownerName, githubUrl, version: botVer } = require("../config/se
 const path = require("path");
 const chalk = require("chalk");
 const sticker = require("./sticker");
+const ia = require("./ai");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -28,6 +29,11 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `✨ *${toSmallCaps("!stats")}* ➟ _Rendimiento del sistema_\n`;
         menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n\n`;
         
+        menuContent += `${divider}\n`;
+        menuContent += `🤖  *ɪ ɴ ᴛ ᴇ ʟ ɪ ɢ ᴇ ɴ ᴄ ɪ ᴀ  ᴀ ʀ ᴛ ɪ ғ ɪ ᴄ ɪ ᴀ ʟ*\n`;
+        menuContent += `${divider}\n`;
+        menuContent += `✨ *${toSmallCaps("!ia")}* ➟ _Preguntar a Gemini AI_\n\n`;
+
         menuContent += `${divider}\n`;
         menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
         menuContent += `${divider}\n`;
@@ -152,4 +158,5 @@ module.exports = {
     creador,
     sticker,
     preguntas,
+    ia,
 };

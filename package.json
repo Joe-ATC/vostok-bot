@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@adiwajshing/keyed-db": "^0.2.4",
+    "@google/generative-ai": "^0.24.1",
     "@whiskeysockets/baileys": "6.7.21",
     "cfonts": "^3.3.1",
     "chalk": "^4.1.2",
