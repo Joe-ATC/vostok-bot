@@ -5,6 +5,7 @@ const chalk = require("chalk");
 const sticker = require("./sticker");
 const attp = require("./attp");
 const toimg = require("./toimg");
+const tts = require("./tts");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -35,7 +36,8 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `${divider}\n`;
         menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n`;
         menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto animado_\n`;
-        menuContent += `✨ *${toSmallCaps("!toimg")}* ➟ _Sticker a imagen_\n\n`;
+        menuContent += `✨ *${toSmallCaps("!toimg")}* ➟ _Sticker a imagen_\n`;
+        menuContent += `✨ *${toSmallCaps("!tts")}* ➟ _Texto a voz (Audio)_\n\n`;
 
         menuContent += `${divider}\n`;
         menuContent += `❓  *ᴀ ʏ ᴜ ᴅ ᴀ*\n`;
@@ -158,4 +160,5 @@ module.exports = {
     preguntas,
     attp,
     toimg,
+    tts,
 };
