@@ -35,7 +35,7 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
         menuContent += `${divider}\n`;
         menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n`;
-        menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto animado_\n`;
+        menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto (Minimalista)_\n`;
         menuContent += `✨ *${toSmallCaps("!toimg")}* ➟ _Sticker a imagen_\n`;
         menuContent += `✨ *${toSmallCaps("!tts")}* ➟ _Texto a voz (Audio)_\n\n`;
 
