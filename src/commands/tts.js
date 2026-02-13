@@ -15,7 +15,7 @@ const tts = async (sock, remoteJid, msg, args) => {
         let text = args.join(" ");
 
         // Detectar si el primer argumento es una voz específica
-        const voices = ["jorge", "loquendo", "google", "siri", "zira"];
+        const voices = ["jorge", "loquendo", "diego", "google", "siri", "zira"];
         const firstArg = args[0].toLowerCase();
 
         if (voices.includes(firstArg)) {
@@ -45,9 +45,9 @@ const tts = async (sock, remoteJid, msg, args) => {
                 slow: false,
                 host: 'https://translate.google.com',
             });
-        } else if (voice === "jorge") {
-            // Usar API de Loquendo Jorge
-            audioUrl = `https://api.agatz.xyz/api/loquendo?message=${encodeURIComponent(text)}`;
+        } else if (voice === "jorge" || voice === "diego") {
+            // Usar API de Loquendo
+            audioUrl = `https://api.agatz.xyz/api/loquendo?message=${encodeURIComponent(text)}&voice=${voice}`;
         } else {
             // Fallback a google si la voz no está implementada aún
             audioUrl = gtts.getAudioUrl(text, { lang: 'es' });
