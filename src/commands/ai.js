@@ -22,6 +22,7 @@ const ia = async (sock, remoteJid, msg, args, pushName) => {
         await sock.sendPresenceUpdate('composing', remoteJid);
         
         const genAI = new GoogleGenerativeAI(geminiApiKey);
+        // Usamos gemini-1.5-flash que es el estándar actual
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
         // Configurar el prompt del sistema para darle personalidad
