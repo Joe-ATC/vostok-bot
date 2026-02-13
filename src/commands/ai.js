@@ -23,13 +23,16 @@ const ia = async (sock, remoteJid, msg, args, pushName) => {
         
         const genAI = new GoogleGenerativeAI(geminiApiKey);
         
-        // Intentamos con gemini-1.5-flash primero
+        /**
+         * Según tus capturas de Google AI Studio, tienes acceso a los modelos 2.0 y 1.5.
+         * Vamos a intentar usar 'gemini-2.0-flash-exp' que es el más reciente de tu lista,
+         * o 'gemini-1.5-flash' como fallback seguro.
+         */
         let model;
         try {
-            model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+            model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
         } catch (e) {
-            // Fallback a gemini-pro si el flash no está disponible
-            model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         }
 
         // Configurar el prompt del sistema para darle personalidad
@@ -58,7 +61,7 @@ const ia = async (sock, remoteJid, msg, args, pushName) => {
         let errorMsg = "❌ Error al conectar con la IA.";
         
         if (err.message?.includes("404")) {
-            errorMsg = "❌ *Error 404:* El modelo de IA no fue encontrado o no está disponible en tu región.";
+            errorMsg = "❌ *Error 404:* El modelo solicitado no existe o no tienes permiso para usarlo. Intentando corregir la versión del modelo...";
         } else if (err.message?.includes("API_KEY_INVALID")) {
             errorMsg = "❌ *Error:* Tu API Key de Gemini no es válida.";
         } else if (err.message?.includes("SAFETY")) {
