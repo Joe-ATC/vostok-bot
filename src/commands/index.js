@@ -3,6 +3,7 @@ const { botName, ownerName, githubUrl, version: botVer } = require("../config/se
 const path = require("path");
 const chalk = require("chalk");
 const sticker = require("./sticker");
+const attp = require("./attp");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -31,7 +32,8 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `${divider}\n`;
         menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
         menuContent += `${divider}\n`;
-        menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n\n`;
+        menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n`;
+        menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto animado_\n\n`;
 
         menuContent += `${divider}\n`;
         menuContent += `❓  *ᴀ ʏ ᴜ ᴅ ᴀ*\n`;
@@ -152,4 +154,5 @@ module.exports = {
     creador,
     sticker,
     preguntas,
+    attp,
 };
