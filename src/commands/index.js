@@ -4,6 +4,7 @@ const path = require("path");
 const chalk = require("chalk");
 const sticker = require("./sticker");
 const attp = require("./attp");
+const toimg = require("./toimg");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -33,7 +34,8 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
         menuContent += `${divider}\n`;
         menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n`;
-        menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto animado_\n\n`;
+        menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto animado_\n`;
+        menuContent += `✨ *${toSmallCaps("!toimg")}* ➟ _Sticker a imagen_\n\n`;
 
         menuContent += `${divider}\n`;
         menuContent += `❓  *ᴀ ʏ ᴜ ᴅ ᴀ*\n`;
@@ -155,4 +157,5 @@ module.exports = {
     sticker,
     preguntas,
     attp,
+    toimg,
 };
