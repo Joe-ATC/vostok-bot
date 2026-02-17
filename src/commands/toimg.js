@@ -1,48 +1,43 @@
 const { downloadContentFromMessage } = require("@whiskeysockets/baileys");
-const { toSmallCaps } = require("../utils/helpers");
+const { toSmallCaps, toBoldSerif, toScript } = require("../utils/helpers");
 const chalk = require("chalk");
 
 const toimg = async (sock, remoteJid, msg) => {
     try {
-        // Verificar si es una respuesta a un mensaje
         const quotedMsg = msg.message?.extendedTextMessage?.contextInfo?.quotedMessage;
         
         if (!quotedMsg || !quotedMsg.stickerMessage) {
             return await sock.sendMessage(remoteJid, { 
-                text: "❌ *Error:* Responde a un sticker estático con el comando `!toimg`." 
+                text: `🌸 *${toBoldSerif("Instrucción")}* 🌸\n\n⌞ ${toScript("Responde a un sticker estático con este comando.")} ⌟` 
             }, { quoted: msg });
         }
 
         const stickerMessage = quotedMsg.stickerMessage;
 
-        // Validar que no sea un sticker animado
         if (stickerMessage.isAnimated) {
             return await sock.sendMessage(remoteJid, { 
-                text: "❌ *Error:* Este comando solo funciona con stickers estáticos (imágenes), no con stickers animados (videos/gifs)." 
+                text: `🌸 *${toBoldSerif("Aviso")}* 🌸\n\n⌞ ${toScript("Este comando no es compatible con stickers animados.")} ⌟` 
             }, { quoted: msg });
         }
 
-        await sock.sendMessage(remoteJid, { text: "⏳ _Convirtiendo sticker a imagen..._" }, { quoted: msg });
-
-        // Descargar el contenido del sticker
-        const stream = await downloadContentFromMessage(stickerMessage, "sticker");
-        let buffer = Buffer.from([]);
-        for await (const chunk of stream) {
-            buffer = Buffer.concat([buffer, chunk]);
-        }
-
-        // Enviar la imagen resultante
         await sock.sendMessage(remoteJid, { 
-            image: buffer, 
-            caption: `✨ *Sᴛɪᴄᴋᴇʀ Cᴏɴᴠᴇʀᴛɪᴅᴏ* ✨\n\n🚀 *${toSmallCaps("Vostok Bot")}*`
+            text: `💮 *${toSmallCaps("Convirtiendo...")}*` 
         }, { quoted: msg });
 
-        console.log(chalk.green("[TOIMG] Conversión realizada con éxito."));
+        const stream = await downloadContentFromMessage(stickerMessage, "sticker");
+        let buffer = Buffer.from([]);
+        for await (const chunk of stream) buffer = Buffer.concat([buffer, chunk]);
 
+        await sock.sendMessage(remoteJid, { 
+            image: buffer, 
+            caption: `『 ${toBoldSerif("Sticker Convertido")} 』 🌸`
+        }, { quoted: msg });
+
+        console.log(chalk.green("[TOIMG] Success."));
     } catch (err) {
         console.error(chalk.red("[TOIMG Error]"), err);
         await sock.sendMessage(remoteJid, { 
-            text: "❌ Hubo un error al intentar convertir el sticker a imagen. Asegúrate de que el sticker sea válido." 
+            text: `🌸 *${toBoldSerif("Error")}* 🌸\n\n⌞ ${toScript("No se pudo realizar la conversión a imagen.")} ⌟` 
         }, { quoted: msg });
     }
 };

@@ -1,12 +1,11 @@
-const { toSmallCaps } = require("../utils/helpers");
+const { toSmallCaps, toBoldSerif, toScript, toMono } = require("../utils/helpers");
 const chalk = require("chalk");
 
 const tagall = async (sock, remoteJid, msg, args) => {
     try {
-        // Verificar si es un grupo
         if (!remoteJid.endsWith('@g.us')) {
             return await sock.sendMessage(remoteJid, { 
-                text: "❌ *Error:* Este comando solo puede ser usado en grupos." 
+                text: `🌸 *${toBoldSerif("Aviso")}* 🌸\n\n⌞ ${toScript("Este comando es de uso exclusivo en grupos.")} ⌟` 
             }, { quoted: msg });
         }
 
@@ -14,31 +13,31 @@ const tagall = async (sock, remoteJid, msg, args) => {
         const participants = metadata.participants;
         const message = args.join(" ") || "¡Atención a todos!";
 
-        const divider = "━━━━━━━━━━━━━━━━━━━━";
-        let tagMsg = `📣 *【 ${toSmallCaps("Mencion General")} 】* 📣\n\n`;
-        tagMsg += `💬 *Mensaje:* ${message}\n\n`;
+        const divider = "❀✿━━━━━━━━━━━━━━━━━━━━✿❀";
+        let tagMsg = `『 ${toBoldSerif("Mención General")} 』 🌸\n\n`;
+        tagMsg += `🌻 *${toBoldSerif("Mensaje:")}* ${message}\n\n`;
         tagMsg += `${divider}\n`;
 
         const mentions = [];
         participants.forEach((mem, i) => {
-            tagMsg += `✨ @${mem.id.split('@')[0]}${(i + 1) % 2 === 0 ? '\n' : '  '}`;
+            tagMsg += `🌸 ${toMono(`@${mem.id.split('@')[0]}`)}${(i + 1) % 2 === 0 ? '\n' : '  '}`;
             mentions.push(mem.id);
         });
 
         tagMsg += `\n${divider}\n`;
-        tagMsg += `👤 *sᴏʟɪᴄɪᴛᴀᴅᴏ ᴘᴏʀ:* @${msg.key.participant.split('@')[0]}`;
+        tagMsg += `🏵️ *${toSmallCaps("Solicitado:")}* @${msg.key.participant.split('@')[0]}`;
 
         await sock.sendMessage(remoteJid, { 
             text: tagMsg, 
             mentions: [...mentions, msg.key.participant] 
         }, { quoted: msg });
 
-        console.log(chalk.green("[TAGALL] Mención enviada con éxito en el grupo."));
+        console.log(chalk.green("[TAGALL] Broadcase sent."));
 
     } catch (err) {
         console.error(chalk.red("[TAGALL Error]"), err);
         await sock.sendMessage(remoteJid, { 
-            text: "❌ Hubo un error al intentar mencionar a todos. Asegúrate de que el bot tenga los permisos necesarios." 
+            text: `🌸 *${toBoldSerif("Error")}* 🌸\n\n⌞ ${toScript("No se pudo completar la mención general.")} ⌟` 
         }, { quoted: msg });
     }
 };

@@ -5,5 +5,5 @@ module.exports = {
     ownerNumber: "521234567890", // Example, change it
     githubUrl: "github.com/Joe-ATC",
     sessionPath: "auth_info_baileys",
-    version: "2.1.0"
+    version: "3.0.0"
 };

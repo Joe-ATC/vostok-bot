@@ -3,18 +3,15 @@ const {
   useMultiFileAuthState,
   fetchLatestBaileysVersion,
   delay,
-  DisconnectReason,
   makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
 const P = require("pino");
 const chalk = require("chalk");
-const qrcode = require("qrcode-terminal");
-const path = require("path");
 
 // imports locales
 const { sessionPath } = require("./src/config/settings");
-const { displayLogo, drawBox, rainbowGradient, cyberGradient, pinkGradient, blueGradient, vaporwaveGradient, goldGradient } = require("./src/utils/ui");
-const { question, toSmallCaps } = require("./src/utils/helpers");
+const { displayLogo, drawBox, floralGradient, goldenFlare, springGradient, violetSky } = require("./src/utils/ui");
+const { question } = require("./src/utils/helpers");
 const { handleConnectionUpdate } = require("./src/handlers/connectionHandler");
 const { handleMessages } = require("./src/handlers/messageHandler");
 
@@ -25,7 +22,7 @@ process.on('uncaughtException', (err) => {
     console.error(chalk.gray(err.stack));
 });
 
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason) => {
     console.error(chalk.red('\n[✖] PROMESA NO MANEJADA:'));
     console.error(chalk.red(`   Razón: ${reason}`));
 });
@@ -37,10 +34,38 @@ let globalSock = null;
 const state = {
     selectedMethod: null,
     lastQr: null,
-    isConnected: false
+    isConnected: false,
+    reconnectTimer: null,
+    isStarting: false,
+    currentSocket: null
 };
 
+async function closeSocketIfNeeded() {
+    if (!globalSock) return;
+    try {
+        await globalSock.end();
+    } catch (err) {
+        console.log(chalk.gray(`[i] No se pudo cerrar socket previo: ${err.message}`));
+    } finally {
+        globalSock = null;
+        state.currentSocket = null;
+    }
+}
+
 async function startBot() {
+  if (state.isStarting) {
+      return;
+  }
+  state.isStarting = true;
+
+  try {
+  if (state.reconnectTimer) {
+      clearTimeout(state.reconnectTimer);
+      state.reconnectTimer = null;
+  }
+
+  await closeSocketIfNeeded();
+
   const { state: authState, saveCreds } = await useMultiFileAuthState(sessionPath);
   
   let version = [2, 3000, 1015901307]; // Fallback version
@@ -56,20 +81,20 @@ async function startBot() {
   // 1. Connection Method Selection
   if (!authState.creds.registered && !state.selectedMethod) {
       drawBox([
-        chalk.bold(rainbowGradient("          VINCULACIÓN DE DISPOSITIVO          ")),
+        chalk.bold(floralGradient("       🌸  VINCULACIÓN DE DISPOSITIVO  🌸       ")),
         "",
-        chalk.cyan("  1. Código QR (RECOMENDADO)                   "),
-        chalk.cyan("  2. Código de vinculación (Pairing Code)      ")
-      ], cyberGradient);
+        chalk.white("  1. Código QR (RECOMENDADO) 💮                "),
+        chalk.white("  2. Código de vinculación (Pairing Code) 💮    ")
+      ], floralGradient);
       
-      const ans = await question(chalk.bold(pinkGradient("   >> Selecciona una opción (1/2): ")));
+      const ans = await question(chalk.bold(floralGradient("   🌻 >> Selecciona una opción (1/2): ")));
       state.selectedMethod = ans.trim();
   }
 
   if (authState.creds.registered) {
-    console.log(chalk.greenBright("   [♻️] Sesión activa encontrada. Conectando..."));
+    console.log(chalk.greenBright("   🌸 [ESTADO] Sesión activa encontrada."));
   } else {
-    console.log(chalk.yellowBright("   [!] Iniciando vinculación nueva..."));
+    console.log(chalk.yellowBright("   💮 [ESTADO] Iniciando nueva vinculación..."));
   }
 
   // 2. Socket Configuration
@@ -90,12 +115,13 @@ async function startBot() {
     retryRequestDelayMs: 5000,
     markOnlineOnConnect: true,
     syncFullHistory: false,
-    getMessage: async (key) => {
+    getMessage: async () => {
         return undefined; 
     },
   });
 
   globalSock = sock;
+  state.currentSocket = sock;
 
   // Event Handlers
   sock.ev.on("creds.update", saveCreds);
@@ -112,27 +138,27 @@ async function startBot() {
   if (!sock.authState.creds.registered && state.selectedMethod === "2") {
       try {
           const phoneNumber = await question(
-              chalk.bold(blueGradient("   >> Ingresa tu número (ej: 521234567890): "))
+              chalk.bold(floralGradient("   🌻 >> Ingresa tu número (ej: 521234567890): "))
           );
           const cleanedNumber = phoneNumber.replace(/[^0-9]/g, "");
           
           if (cleanedNumber && cleanedNumber.length >= 10) {
-              console.log(chalk.magentaBright("\n   [!] Solicitando código de vinculación..."));
+              console.log(chalk.magentaBright("\n   💮 [SOPORTE] Generando código floral..."));
               
               // Importante: Esperar un poco a que el socket esté listo
               await delay(5000);
               
               const code = await sock.requestPairingCode(cleanedNumber);
               
-              drawBox(goldGradient(" TU CÓDIGO ES: ") + chalk.bgMagenta.white.bold(` ${code} `), rainbowGradient);
+              drawBox(floralGradient(" TU CÓDIGO FLORAL ES: ") + chalk.bgMagenta.white.bold(` ${code} `), floralGradient);
               
               drawBox([
-                  chalk.gray(" 1. Abre WhatsApp > Dispositivos vinculados    "),
-                  chalk.gray(" 2. Vincular con el número de teléfono         "),
-                  chalk.gray(" 3. Ingresa tu código ahora mismo              "),
+                  chalk.white(" 1. Abre WhatsApp > Dispositivos vinculados    "),
+                  chalk.white(" 2. Vincular con el número de teléfono         "),
+                  chalk.white(" 3. Ingresa tu código ahora mismo              "),
                   "",
-                  chalk.yellow(" ⚠️  No cierres el bot hasta que diga CONECTADO   ")
-              ], vaporwaveGradient);
+                  chalk.yellow(" ⚠️  No cierres el bot durante el proceso        ")
+              ], floralGradient);
           } else {
               console.log(chalk.red.bold("\n   [ERROR] Número inválido. Reinicia y usa formato correcto."));
               process.exit(1);
@@ -142,11 +168,15 @@ async function startBot() {
           console.log(chalk.yellow("   [!] Intenta de nuevo o usa el método QR."));
       }
   }
+  } finally {
+      state.isStarting = false;
+  }
 }
 
 process.on('SIGINT', async () => {
     console.log(chalk.yellow("\n[!] Bot apagado correctamente."));
     if (globalSock) try { await globalSock.end(); } catch(e){}
+    state.currentSocket = null;
     process.exit(0);
 });
 

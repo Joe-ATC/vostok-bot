@@ -1,20 +1,18 @@
-const axios = require("axios");
 const gtts = require("google-tts-api");
-const { toSmallCaps } = require("../utils/helpers");
+const { toSmallCaps, toBoldSerif, toScript, toMono } = require("../utils/helpers");
 const chalk = require("chalk");
 
 const tts = async (sock, remoteJid, msg, args) => {
     try {
         if (args.length === 0) {
             return await sock.sendMessage(remoteJid, { 
-                text: "❌ *Error:* Por favor ingresa el texto.\n💡 *Ejemplo:* `!tts hola mundo` o `!tts jorge hola mundo`" 
+                text: `🌸 *${toBoldSerif("Instrucción")}* 🌸\n\n⌞ ${toScript("Proporciona el texto que deseas convertir")} ⌟\n\n🌻 *${toBoldSerif("Opciones de voz:")}*\n🌸 ${toMono("!tts jorge")} [texto]\n🌸 ${toMono("!tts diego")} [texto]` 
             }, { quoted: msg });
         }
 
         let voice = "google";
         let text = args.join(" ");
 
-        // Detectar si el primer argumento es una voz específica
         const voices = ["jorge", "loquendo", "diego", "google", "siri", "zira"];
         const firstArg = args[0].toLowerCase();
 
@@ -26,17 +24,19 @@ const tts = async (sock, remoteJid, msg, args) => {
 
         if (!text) {
             return await sock.sendMessage(remoteJid, { 
-                text: `❌ *Error:* Por favor ingresa el texto para la voz de *${voice}*.` 
+                text: `🌸 *${toBoldSerif("Aviso")}* 🌸\n\n⌞ ${toScript(`Falta el texto para la voz de ${voice}.`)} ⌟` 
             }, { quoted: msg });
         }
 
         if (text.length > 300) {
             return await sock.sendMessage(remoteJid, { 
-                text: "❌ *Error:* El texto es demasiado largo (máx 300 caracteres)." 
+                text: `🌸 *${toBoldSerif("Límite")}* 🌸\n\n⌞ ${toScript("El texto excede el máximo de 300 caracteres.")} ⌟` 
             }, { quoted: msg });
         }
 
-        await sock.sendMessage(remoteJid, { text: `🎙️ _Generando audio (${voice})..._` }, { quoted: msg });
+        await sock.sendMessage(remoteJid, { 
+            text: `🎙️ *${toSmallCaps(`Generando audio ${voice}...`)}*` 
+        }, { quoted: msg });
 
         let audioUrl;
         if (voice === "google") {
@@ -46,10 +46,8 @@ const tts = async (sock, remoteJid, msg, args) => {
                 host: 'https://translate.google.com',
             });
         } else if (voice === "jorge" || voice === "diego") {
-            // Usar API de Loquendo
             audioUrl = `https://api.agatz.xyz/api/loquendo?message=${encodeURIComponent(text)}&voice=${voice}`;
         } else {
-            // Fallback a google si la voz no está implementada aún
             audioUrl = gtts.getAudioUrl(text, { lang: 'es' });
         }
 
@@ -59,12 +57,12 @@ const tts = async (sock, remoteJid, msg, args) => {
             ptt: true 
         }, { quoted: msg });
 
-        console.log(chalk.green(`[TTS] Audio generado (${voice}) con éxito.`));
+        console.log(chalk.green(`[TTS] ${voice} completado.`));
 
     } catch (err) {
         console.error(chalk.red("[TTS Error]"), err);
         await sock.sendMessage(remoteJid, { 
-            text: "❌ Hubo un error al generar el audio. Inténtalo de nuevo más tarde." 
+            text: `🌸 *${toBoldSerif("Error")}* 🌸\n\n⌞ ${toScript("Hubo un problema al generar el audio solicitado.")} ⌟` 
         }, { quoted: msg });
     }
 };

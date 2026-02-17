@@ -1,13 +1,8 @@
-const { toSmallCaps } = require("../utils/helpers");
+﻿const { toSmallCaps, toBoldSerif, toMono, toScript } = require("../utils/helpers");
 const { botName, ownerName, githubUrl, version: botVer } = require("../config/settings");
 const path = require("path");
 const chalk = require("chalk");
 const sticker = require("./sticker");
-const attp = require("./attp");
-const toimg = require("./toimg");
-const tts = require("./tts");
-const tagall = require("./tagall");
-const pinterest = require("./pinterest");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -16,43 +11,34 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         const timeStr = now.toLocaleTimeString();
         const userJid = msg.key.participant || msg.key.remoteJid;
 
-        const divider = `━━━━━━━━━━━━━━━━━━━━`;
+        const divider = `❀✿━━━━━━━━━━━━━━━━━━✿❀`;
         
-        let menuContent = `🔮 *【 ${toSmallCaps(botName)} 】* 🔮\n\n`;
+        let menuContent = `『 ${toBoldSerif(botName)} 』 🌸\n\n`;
         
-        menuContent += `🔹 *ᴜsᴜᴀʀɪᴏ:* @${userJid.split('@')[0]}\n`;
-        menuContent += `📅 *ғᴇᴄʜᴀ:* ${dateStr}\n`;
-        menuContent += `⏰ *ʜᴏʀᴀ:* ${timeStr}\n`;
-        menuContent += `🚀 *ᴠᴇʀsɪᴏɴ:* ${botVer}\n\n`;
-        
-        menuContent += `${divider}\n`;
-        menuContent += `🌸  *ɪ ɴ ғ ᴏ ʀ ᴍ ᴀ ᴄ ɪ ᴏ ɴ*\n`;
-        menuContent += `${divider}\n`;
-        menuContent += `✨ *${toSmallCaps("!menu")}* ➟ _Menú principal_\n`;
-        menuContent += `✨ *${toSmallCaps("!ping")}* ➟ _Velocidad del bot_\n`;
-        menuContent += `✨ *${toSmallCaps("!stats")}* ➟ _Rendimiento del sistema_\n`;
-        menuContent += `✨ *${toSmallCaps("!creador")}* ➟ _Info del desarrollador_\n\n`;
+        menuContent += `💮 ${toSmallCaps("Usuario:")} @${userJid.split('@')[0]}\n`;
+        menuContent += `💮 ${toSmallCaps("Fecha:")} ${dateStr}\n`;
+        menuContent += `💮 ${toSmallCaps("Hora:")} ${timeStr}\n`;
+        menuContent += `💮 ${toSmallCaps("Version:")} ${botVer}\n\n`;
         
         menuContent += `${divider}\n`;
-        menuContent += `🛠️  *ᴜ ᴛ ɪ ʟ ɪ ᴅ ᴀ ᴅ ᴇ s*\n`;
+        menuContent += `   🌸  *${toBoldSerif("I N F O R M A C I O N")}*\n`;
         menuContent += `${divider}\n`;
-        menuContent += `✨ *${toSmallCaps("!sticker")}* ➟ _Crear stickers_\n`;
-        menuContent += `✨ *${toSmallCaps("!attp")}* ➟ _Sticker de texto (Minimalista)_\n`;
-        menuContent += `✨ *${toSmallCaps("!toimg")}* ➟ _Sticker a imagen_\n`;
-        menuContent += `✨ *${toSmallCaps("!tts")}* ➟ _Texto a voz (Jorge/Diego)_\n`;
-        menuContent += `✨ *${toSmallCaps("!pinterest")}* ➟ _Buscar imágenes_\n\n`;
+        menuContent += `🌻 *${toMono("!menu")}* ⌞ ${toScript("Menú principal")} ⌟\n`;
+        menuContent += `🌻 *${toMono("!ping")}* ⌞ ${toScript("Estatus")} ⌟\n`;
+        menuContent += `🌻 *${toMono("!stats")}* ⌞ ${toScript("Rendimiento")} ⌟\n`;
+        menuContent += `🌻 *${toMono("!creador")}* ⌞ ${toScript("Desarrollador")} ⌟\n\n`;
         
         menuContent += `${divider}\n`;
-        menuContent += `👥  *ɢ ʀ ᴜ ᴘ ᴏ s*\n`;
+        menuContent += `   🌻  *${toBoldSerif("U T I L I D A D E S")}*\n`;
         menuContent += `${divider}\n`;
-        menuContent += `✨ *${toSmallCaps("!tagall")}* ➟ _Mencionar a todos_\n\n`;
-
-        menuContent += `${divider}\n`;
-        menuContent += `❓  *ᴀ ʏ ᴜ ᴅ ᴀ*\n`;
-        menuContent += `${divider}\n`;
-        menuContent += `✨ *${toSmallCaps("!preguntas")}* ➟ _Preguntas frecuentes_\n\n`;
+        menuContent += `🌸 *${toMono("!sticker")}* ⌞ ${toScript("Crear sticker")} ⌟\n\n`;
         
-        menuContent += `🌟 *ᴘᴏᴡᴇʀᴇᴅ ʙʏ ɢʀ-&&* 🌟`;
+        menuContent += `${divider}\n`;
+        menuContent += `     *${toBoldSerif("A Y U D A")}*\n`;
+        menuContent += `${divider}\n`;
+        menuContent += `🌺 *${toMono("!preguntas")}* ⌞ ${toScript("FAQs")} ⌟\n\n`;
+        
+        menuContent += `🏵️ ${toBoldSerif("Powered by GR-&&")} 🏵️`;
 
         await sock.sendMessage(remoteJid, { 
             image: { url: path.join(process.cwd(), "assets", "menu", "vostok.jpg") },
@@ -67,29 +53,28 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
 const preguntas = async (sock, remoteJid, msg) => {
     try {
         const userJid = msg.key.participant || msg.key.remoteJid;
-        const divider = `━━━━━━━━━━━━━━━━━━━━`;
+        const divider = `❀━━━━━━━━━━━━━━━━━━❀`;
 
-        let faq = `❓ *【 ${toSmallCaps("Preguntas Frecuentes")} 】* ❓\n\n`;
+        let faq = `❀ *${toBoldSerif("Preguntas Frecuentes")}* ❀\n\n`;
 
         const questions = [
-            ["¿Qué es Vostok-Core?", "Es un bot multi-funcional diseñado para optimizar la interacción en WhatsApp."],
-            ["¿Es seguro usarlo?", "Sí, el bot utiliza una conexión cifrada punto a punto a través de Baileys."],
-            ["¿Cómo hago un sticker?", "Envía una imagen o video corto (max 10s) con el comando !sticker."],
-            ["¿Por qué no responde?", "Puede ser por falta de conexión o sesión caída. Es normal debido a que está en una fase de prueba."],
-            ["¿Funciona en grupos?", "Sí, está optimizado para funcionar tanto en chats privados como grupales."],
-            ["¿Cómo veo mi latencia?", "Usa el comando !ping para ver la velocidad de respuesta."],
-            ["¿Quién es el creador?", "Puedes ver la info del desarrollador usando el comando !creador."],
-            ["¿El bot es gratuito?", "El bot es open source, por lo tanto: SI. Aunque puede que existen costos por servicios especificos"],
-            ["¿Cómo actualizo el bot?", "Mantente al tanto del repositorio oficial en GitHub para nuevos cambios."],
-            ["¿Qué hago si hay un bug?", "Reporta cualquier error directamente al desarrollador para una pronta solución."]
+            ["¿Qué es Vostok-Core?", "Un bot elegante y funcional para WhatsApp."],
+            ["¿Es seguro?", "Sí, utiliza cifrado punto a punto vía Baileys."],
+            ["¿Stickes?", "Envía imagen/video con !sticker."],
+            ["¿No responde?", "Revisa el estado de conexión del servidor."],
+            ["¿Latencia?", "Usa !ping para ver la velocidad."],
+            ["¿Creador?", "Usa !creador para información del autor."],
+            ["¿Costo?", "Es software libre y gratuito."],
+            ["¿Actualización?", "Sigue el repositorio oficial en GitHub."],
+            ["¿Errores?", "Reporta fallos al desarrollador para soporte."]
         ];
 
         questions.forEach(([q, a], i) => {
-            faq += `*${i + 1}. ${q}*\n└ ${a}\n\n`;
+            faq += `🌸 *${i + 1}. ${toSmallCaps(q)}*\n⌞ ${toScript(a)}\n\n`;
         });
 
         faq += `${divider}\n`;
-        faq += `👤 *sᴏʟɪᴄɪᴛᴀᴅᴏ ᴘᴏʀ:* @${userJid.split('@')[0]}`;
+        faq += `💮 *${toSmallCaps("Solicitado por:")}* @${userJid.split('@')[0]}`;
 
         await sock.sendMessage(remoteJid, { 
             text: faq,
@@ -103,10 +88,10 @@ const preguntas = async (sock, remoteJid, msg) => {
 const ping = async (sock, remoteJid, msg) => {
     try {
         const start = Date.now();
-        const { key } = await sock.sendMessage(remoteJid, { text: "🚀 _Calculando latencia..._" }, { quoted: msg });
+        const { key } = await sock.sendMessage(remoteJid, { text: "🌸 _Midiendo latencia..._" }, { quoted: msg });
         const latency = Date.now() - start;
         await sock.sendMessage(remoteJid, { 
-            text: `📡 *Woshh!* \n✨ Latencia: *${latency}ms*`,
+            text: `💮 *${toBoldSerif("Estatus")}*\n\n🌻 ${toSmallCaps("Velocidad:")} *${latency}ms*\n🌺 ${toSmallCaps("Estado:")} *${toScript("Operativo")}*`,
             edit: key
         });
     } catch (err) {
@@ -121,11 +106,11 @@ const stats = async (sock, remoteJid, msg) => {
         const hours = Math.floor(uptime / 3600);
         const mins = Math.floor((uptime % 3600) / 60);
 
-        let statsMess = `📊 *ᴇsᴛᴀᴅɪ́sᴛɪᴄᴀs ᴠᴏsᴛᴏᴋ* 📊\n\n`;
-        statsMess += `✨ *ᴍᴇᴍᴏʀɪᴀ:* ${used.toFixed(2)} MB\n`;
-        statsMess += `✨ *ᴜᴘᴛɪᴍᴇ:* ${hours}h ${mins}m\n`;
-        statsMess += `✨ *ᴘʟᴀᴛᴀғᴏʀᴍᴀ:* ${process.platform}\n`;
-        statsMess += `✨ *ɴᴏᴅᴇ:* ${process.version}`;
+        let statsMess = `『 ${toBoldSerif("Rendimiento")} 』 🌺\n\n`;
+        statsMess += `🌸 *${toSmallCaps("Memoria:")}* ${used.toFixed(2)} MB\n`;
+        statsMess += `🌸 *${toSmallCaps("Uptime:")}* ${hours}h ${mins}m\n`;
+        statsMess += `🌸 *${toSmallCaps("Sistema:")}* ${process.platform}\n`;
+        statsMess += `🌸 *${toSmallCaps("Motor:")}* Node ${process.version}`;
 
         await sock.sendMessage(remoteJid, { text: statsMess }, { quoted: msg });
     } catch (err) {
@@ -136,18 +121,16 @@ const stats = async (sock, remoteJid, msg) => {
 const creador = async (sock, remoteJid, msg) => {
     try {
         const userJid = msg.key.participant || msg.key.remoteJid;
-        const divider = `────────────────────`;
+        const divider = `❀━━━━━━━━━━━━━━━━━━❀`;
 
-        let msgText = `💻 *【 ${toSmallCaps("Developer Info")} 】* 💻\n\n`;
+        let msgText = `『 ${toBoldSerif("Developer Info")} 』 💮\n\n`;
         
-        msgText += `👤 *ɴᴏᴍʙʀᴇ:* ${ownerName}\n`;
-        msgText += `🚀 *ᴘᴇʀғɪʟ:* Programador Experimentado\n`;
-        msgText += `🌐 *ᴀʀᴇᴀ:* Apps y Webs\n`;
-        msgText += `🔗 *ɢɪᴛʜᴜʙ:* ${githubUrl}\n\n`;
+        msgText += `🌸 *${toSmallCaps("Nombre:")}* ${ownerName}\n`;
+        msgText += `🌸 *${toSmallCaps("Rol:")}* ${toScript("Software Developer")} \n`;
+        msgText += `🌸 *${toSmallCaps("Github:")}* ${githubUrl}\n\n`;
         
         msgText += `${divider}\n`;
-        msgText += `👤 *sᴏʟɪᴄɪᴛᴀᴅᴏ ᴘᴏʀ:* @${userJid.split('@')[0]}\n`;
-        msgText += `${divider}`;
+        msgText += `💮 *${toSmallCaps("Solicitado por:")}* @${userJid.split('@')[0]}`;
 
         await sock.sendMessage(remoteJid, { 
             image: { url: path.join(process.cwd(), "assets", "fun", "creador.png") },
@@ -166,9 +149,4 @@ module.exports = {
     creador,
     sticker,
     preguntas,
-    attp,
-    toimg,
-    tts,
-    tagall,
-    pinterest,
 };
