@@ -1,7 +1,8 @@
-const { DisconnectReason } = require("@whiskeysockets/baileys");
+﻿const { DisconnectReason } = require("@whiskeysockets/baileys");
 const chalk = require("chalk");
 const qrcode = require("qrcode-terminal");
 const { displayLogo, drawBox, floralGradient } = require("../utils/ui");
+const logger = require("../utils/logger");
 
 const reconnectionState = {
     attempts: 0,
@@ -33,6 +34,7 @@ const handleConnectionUpdate = async (update, sock, startBot, state) => {
         state.isConnected = true;
         state.lastQr = null;
         reconnectionState.attempts = 0;
+        logger.info("whatsapp_connection_open");
         displayLogo();
         console.log("   " + chalk.bold(floralGradient("   ESTADO: ")) + chalk.bgMagenta.white.bold(" CONECTADO ") + chalk.bold(floralGradient(" 🌸")));
         console.log("");
@@ -48,6 +50,7 @@ const handleConnectionUpdate = async (update, sock, startBot, state) => {
     const statusCode = error?.output?.statusCode || error?.output?.payload?.statusCode;
     const shouldReconnect = statusCode !== DisconnectReason.loggedOut;
 
+    logger.warn({ statusCode, message: error?.message }, "whatsapp_connection_closed");
     console.log(chalk.red.bold(`\n💮 [!] Conexión cerrada. Código: ${statusCode || "Oculto"}`));
     if (error) console.log(chalk.gray(`    Razón: ${error.message || "Desconocida"}`));
 
@@ -56,15 +59,12 @@ const handleConnectionUpdate = async (update, sock, startBot, state) => {
         process.exit(1);
     }
 
-    if (!shouldReconnect) {
-        return;
-    }
-
-    if (state.reconnectTimer) {
+    if (!shouldReconnect || state.reconnectTimer) {
         return;
     }
 
     if (reconnectionState.attempts >= reconnectionState.maxAttempts) {
+        logger.error("max_reconnect_attempts_reached");
         console.log(chalk.red.bold("🌺 [!] Máximo de reintentos alcanzado. Bot detenido."));
         process.exit(1);
     }

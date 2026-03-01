@@ -1,6 +1,6 @@
 ﻿const { prefix } = require("../config/settings");
 const commands = require("../commands/index");
-const chalk = require("chalk");
+const logger = require("../utils/logger");
 
 const extractText = (msg) => {
     return (
@@ -22,13 +22,10 @@ const handleSingleMessage = async (msg, sock) => {
     if (!text.startsWith(prefix)) return;
 
     const args = text.slice(prefix.length).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
+    const commandName = (args.shift() || "").toLowerCase();
+    if (!commandName) return;
 
-    console.log(
-        chalk.hex("#FFB7C5")(`🌸 [${new Date().toLocaleTimeString()}] `) +
-        chalk.hex("#FF69B4").bold(`𝗖𝗢𝗠𝗔𝗡𝗗𝗢: ${commandName} `) +
-        chalk.hex("#DDA0DD")(`de ${remoteJid.split("@")[0]}`)
-    );
+    logger.info({ commandName, remoteJid }, "command_received");
 
     if (commands[commandName] || commandName === "help") {
         await sock.sendMessage(remoteJid, {
@@ -53,10 +50,9 @@ const handleMessages = async (m, sock) => {
             await handleSingleMessage(msg, sock);
         }
     } catch (err) {
-        console.error(chalk.red("🌸 Error al manejar mensaje:"), err);
+        logger.error({ err: err.message }, "message_handling_failed");
         if (String(err).includes("SessionError") || String(err).includes("no session")) {
-            console.log(chalk.yellowBright("\n💮 [!] Error critico de sesion."));
-            console.log(chalk.yellowBright("💮 [!] Accion recomendada: eliminar carpeta de enlace y vincular nuevamente.\n"));
+            logger.warn("session_error_detected_relink_recommended");
         }
     }
 };

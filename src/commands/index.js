@@ -3,6 +3,12 @@ const { botName, ownerName, githubUrl, version: botVer } = require("../config/se
 const path = require("path");
 const chalk = require("chalk");
 const sticker = require("./sticker");
+const downloader = require("./downloader");
+const attp = require("./attp");
+const toimg = require("./toimg");
+const tts = require("./tts");
+const pinterest = require("./pinterest");
+const tagall = require("./tagall");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -31,7 +37,15 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `${divider}\n`;
         menuContent += `   🌻  *${toBoldSerif("U T I L I D A D E S")}*\n`;
         menuContent += `${divider}\n`;
-        menuContent += `🌸 *${toMono("!sticker")}* ⌞ ${toScript("Crear sticker")} ⌟\n\n`;
+        menuContent += `🌸 *${toMono("!sticker")}* ⌞ ${toScript("Crear sticker")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!dl")}* ⌞ ${toScript("Descarga Universal")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!toimg")}* ⌞ ${toScript("Sticker a imagen")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!attp")}* ⌞ ${toScript("Texto a sticker")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!tts")}* ⌞ ${toScript("Texto a voz")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!pinterest")}* ⌞ ${toScript("Buscar imágenes")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!tagall")}* ⌞ ${toScript("Mencionar grupo")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!ytmp4")}* ⌞ ${toScript("YouTube Video")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!igmp4")}* ⌞ ${toScript("Instagram Video")} ⌟\n\n`;
         
         menuContent += `${divider}\n`;
         menuContent += `     *${toBoldSerif("A Y U D A")}*\n`;
@@ -148,5 +162,16 @@ module.exports = {
     stats,
     creador,
     sticker,
+    attp,
+    toimg,
+    tts,
+    pinterest,
+    tagall,
     preguntas,
+    dl: downloader,
+    ytmp4: downloader,
+    igmp4: downloader,
+    fbmp4: downloader,
+    pinmp4: downloader,
+    download: downloader,
 };
