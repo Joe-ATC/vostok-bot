@@ -1,54 +1,51 @@
-# VOSTOK-BOT | CORE
+# bot_zte
 
----
+Bot de WhatsApp basado en Baileys con arquitectura modular de comandos.
 
-## ◣ ASISTENTE MULTI-FUNCIONAL PARA WHATSAPP ◥
+## Requisitos
 
-![Banner](banfun.gif)
+- Node.js 20+
+- npm 10+
+- FFmpeg (ya resuelto por `ffmpeg-static`)
 
-ESTADO DEL PROYECTO: OPERATIVO [V-2.1.0]
+## Instalación
 
----
+```bash
+npm install
+```
 
-## ARQUITECTURA Y PROCESO DE DESARROLLO
+## Configuración
 
-El desarrollo de este bot se baso en tres pilares fundamentales:
+1. Crear `.env` a partir de `.env.example`.
+2. Ajustar valores de propietario, prefijo y endpoints.
 
-1. CONEXION Y ESTABILIDAD (BACKEND)
-   - Implementacion de Baileys Multi-Device.
-   - Sistema de reconexion automatica con Backoff Exponencial.
-   - Manejo global de excepciones para prevenir cierres inesperados.
-   - Soporte para vinculacion via QR y Pairing Code.
+Variables clave:
 
-2. LOGICA MODULAR (COMMANDS)
-   - Separacion de comandos en archivos independientes.
-   - Procesamiento de imagenes y videos mediante FFmpeg (Mobile-First).
-   - Sistema de metadatos EXIF para la generacion de Stickers.
+- `BOT_PREFIX`
+- `BOT_SESSION_PATH`
+- `DOWNLOAD_API_URL`
+- `AGATZ_API_BASE_URL`
+- `LOG_LEVEL`
+- `REQUEST_TIMEOUT_MS`
+- `REQUEST_RETRY_COUNT`
 
-3. INTERFAZ RESPONSIVA (UI)
-   - Diseño de menus adaptables a dispositivos moviles.
-   - Uso de caracteres ASCII y Small Caps para estetica premium.
-   - Menciones dinamicas y respuestas citadas automáticas.
+## Ejecución
 
----
+```bash
+node index.js
+```
 
-## FUNCIONALIDADES ACTUALES
+## Tests
 
-- [!] MENU : Panel de control interactivo y responsivo.
-- [!] STICKER : Conversor de Imagen/Video/GIF a Sticker.
-- [!] PREGUNTAS : Sistema de FAQ y Soporte integrado.
-- [!] PING : Medidor de latencia del servidor.
-- [!] CREADOR : Info del dev.
+```bash
+npm test
+```
 
----
+## Arquitectura
 
-## STACK TECNOLOGICO
-
-- PLATAFORMA : Node.js (JavaScript)
-- MOTOR : @whiskeysockets/baileys
-- MULTIMEDIA : FFmpeg Static
-- ESTILO : ASCII / Small Caps Helpers
-
----
-
-## POWERED BY GR-&&
+- `index.js`: bootstrap del socket y wiring de handlers.
+- `src/handlers`: manejo de eventos de conexión y mensajes.
+- `src/commands`: comandos del bot (presentación + coordinación).
+- `src/services`: integración con APIs externas (descarga/TTS/Pinterest).
+- `src/config/settings.js`: configuración y validación de entorno.
+- `src/utils/logger.js`: logging estructurado con Pino.
