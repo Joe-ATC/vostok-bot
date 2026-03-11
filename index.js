@@ -136,11 +136,11 @@ async function startBot() {
                 const cleanedNumber = phoneNumber.replace(/[^0-9]/g, "");
 
                 if (cleanedNumber && cleanedNumber.length >= 10) {
-                    console.log(chalk.magentaBright("\n   💮 [SOPORTE] Generando código floral..."));
+                    console.log(chalk.magentaBright("\n   💮 [SOPORTE] Generando código..."));
                     await delay(5000);
                     const code = await sock.requestPairingCode(cleanedNumber);
 
-                    drawBox(floralGradient(" TU CÓDIGO FLORAL ES: ") + chalk.bgMagenta.white.bold(` ${code} `), floralGradient);
+                    drawBox(floralGradient(" TU CÓDIGO ES: ") + chalk.bgMagenta.white.bold(` ${code} `), floralGradient);
                 } else {
                     console.log(chalk.red.bold("\n   [ERROR] Número inválido. Reinicia y usa formato correcto."));
                     process.exit(1);

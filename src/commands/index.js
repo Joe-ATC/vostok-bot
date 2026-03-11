@@ -6,9 +6,6 @@ const sticker = require("./sticker");
 const downloader = require("./downloader");
 const attp = require("./attp");
 const toimg = require("./toimg");
-const tts = require("./tts");
-const pinterest = require("./pinterest");
-const tagall = require("./tagall");
 
 const menu = async (sock, remoteJid, msg, args, pushName) => {
     try {
@@ -38,14 +35,11 @@ const menu = async (sock, remoteJid, msg, args, pushName) => {
         menuContent += `   🌻  *${toBoldSerif("U T I L I D A D E S")}*\n`;
         menuContent += `${divider}\n`;
         menuContent += `🌸 *${toMono("!sticker")}* ⌞ ${toScript("Crear sticker")} ⌟\n`;
-        menuContent += `🌸 *${toMono("!dl")}* ⌞ ${toScript("Descarga Universal")} ⌟\n`;
         menuContent += `🌸 *${toMono("!toimg")}* ⌞ ${toScript("Sticker a imagen")} ⌟\n`;
         menuContent += `🌸 *${toMono("!attp")}* ⌞ ${toScript("Texto a sticker")} ⌟\n`;
-        menuContent += `🌸 *${toMono("!tts")}* ⌞ ${toScript("Texto a voz")} ⌟\n`;
-        menuContent += `🌸 *${toMono("!pinterest")}* ⌞ ${toScript("Buscar imágenes")} ⌟\n`;
-        menuContent += `🌸 *${toMono("!tagall")}* ⌞ ${toScript("Mencionar grupo")} ⌟\n`;
-        menuContent += `🌸 *${toMono("!ytmp4")}* ⌞ ${toScript("YouTube Video")} ⌟\n`;
-        menuContent += `🌸 *${toMono("!igmp4")}* ⌞ ${toScript("Instagram Video")} ⌟\n\n`;
+        menuContent += `🌸 *${toMono("!download")}* ⌞ ${toScript("Descarga Universal")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!fbmp4")}* ⌞ ${toScript("Facebook Video")} ⌟\n`;
+        menuContent += `🌸 *${toMono("!pinmp4")}* ⌞ ${toScript("Pinterest Video")} ⌟\n\n`;
         
         menuContent += `${divider}\n`;
         menuContent += `     *${toBoldSerif("A Y U D A")}*\n`;
@@ -74,10 +68,7 @@ const preguntas = async (sock, remoteJid, msg) => {
         const questions = [
             ["¿Qué es Vostok-Core?", "Un bot elegante y funcional para WhatsApp."],
             ["¿Es seguro?", "Sí, utiliza cifrado punto a punto vía Baileys."],
-            ["¿Stickes?", "Envía imagen/video con !sticker."],
             ["¿No responde?", "Revisa el estado de conexión del servidor."],
-            ["¿Latencia?", "Usa !ping para ver la velocidad."],
-            ["¿Creador?", "Usa !creador para información del autor."],
             ["¿Costo?", "Es software libre y gratuito."],
             ["¿Actualización?", "Sigue el repositorio oficial en GitHub."],
             ["¿Errores?", "Reporta fallos al desarrollador para soporte."]
@@ -164,13 +155,7 @@ module.exports = {
     sticker,
     attp,
     toimg,
-    tts,
-    pinterest,
-    tagall,
     preguntas,
-    dl: downloader,
-    ytmp4: downloader,
-    igmp4: downloader,
     fbmp4: downloader,
     pinmp4: downloader,
     download: downloader,

@@ -24,7 +24,6 @@ Variables clave:
 - `BOT_PREFIX`
 - `BOT_SESSION_PATH`
 - `DOWNLOAD_API_URL`
-- `AGATZ_API_BASE_URL`
 - `LOG_LEVEL`
 - `REQUEST_TIMEOUT_MS`
 - `REQUEST_RETRY_COUNT`
@@ -46,6 +45,6 @@ npm test
 - `index.js`: bootstrap del socket y wiring de handlers.
 - `src/handlers`: manejo de eventos de conexión y mensajes.
 - `src/commands`: comandos del bot (presentación + coordinación).
-- `src/services`: integración con APIs externas (descarga/TTS/Pinterest).
+- `src/services`: integración con APIs externas de descarga.
 - `src/config/settings.js`: configuración y validación de entorno.
 - `src/utils/logger.js`: logging estructurado con Pino.

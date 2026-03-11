@@ -16,8 +16,7 @@ const settings = {
     logLevel: process.env.LOG_LEVEL || "info",
     requestTimeoutMs: asPositiveInt(process.env.REQUEST_TIMEOUT_MS, 15000),
     requestRetryCount: asPositiveInt(process.env.REQUEST_RETRY_COUNT, 2),
-    downloadApiUrl: process.env.DOWNLOAD_API_URL || "http://localhost:3000/api/download",
-    agatzApiBaseUrl: process.env.AGATZ_API_BASE_URL || "https://api.agatz.xyz/api"
+    downloadApiUrl: process.env.DOWNLOAD_API_URL || "http://localhost:3000/api/download"
 };
 
 const validateSettings = () => {
@@ -26,9 +25,6 @@ const validateSettings = () => {
     }
     if (!/^https?:\/\//i.test(settings.downloadApiUrl)) {
         throw new Error("DOWNLOAD_API_URL must be a valid http/https URL");
-    }
-    if (!/^https?:\/\//i.test(settings.agatzApiBaseUrl)) {
-        throw new Error("AGATZ_API_BASE_URL must be a valid http/https URL");
     }
 };
 

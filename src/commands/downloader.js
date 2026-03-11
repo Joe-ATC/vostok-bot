@@ -7,7 +7,7 @@ const downloader = async (sock, remoteJid, msg, args) => {
         const url = args[0];
         if (!url) {
             return await sock.sendMessage(remoteJid, {
-                text: `🌸 *${toBoldSerif("Instrucción")}* 🌸\n\n⌞ ${toScript("Ingresa el link que deseas descargar.")} ⌟\n\n🌻 *Ejemplo:* !dl https://www.youtube.com/watch?v=...`
+                text: `🌸 *${toBoldSerif("Instrucción")}* 🌸\n\n⌞ ${toScript("Ingresa el link que deseas descargar.")} ⌟\n\n🌻 *Ejemplo:* !download https://www.youtube.com/watch?v=...`
             }, { quoted: msg });
         }
 

@@ -11,17 +11,11 @@ test("expone comandos clave del bot", () => {
         "creador",
         "sticker",
         "preguntas",
-        "dl",
-        "ytmp4",
-        "igmp4",
         "fbmp4",
         "pinmp4",
         "download",
         "attp",
-        "toimg",
-        "tts",
-        "pinterest",
-        "tagall"
+        "toimg"
     ];
 
     for (const commandName of expected) {
